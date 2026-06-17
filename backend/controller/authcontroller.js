@@ -199,12 +199,12 @@ export const resendVerification = async (req, res) => {
              
           }
            //check auth 
-            export  const checkauth =  async () => { 
-           try {
-               const user  =  await User.findById(req.userId) 
+            export  const checkauth =  async (req, res) => { 
+              try {
+                const user = await User.findById(req.userId)
 
                if(!user) { 
-                return res.status(400).json({success:false ,  message:error.message})
+                  return res.status(404).json({ success: false, message: 'User not found' })
 
                }
                 res.status(200).json({success:true ,user }) 
@@ -212,7 +212,140 @@ export const resendVerification = async (req, res) => {
            } catch (error) {
              console.log("Error in checking authentication ") 
 
-            return res.status(200).json({success:false  , message:error.message})
+                return res.status(500).json({ success: false, message: error.message })
            }
 
             }           
+              // google auth 
+export const googleAuth = async (req, res) => {
+  try {
+    const { email, name, uid, photoURL } = req.body
+
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'Email is required' })
+    }
+
+    let user = await User.findOne({ email })
+
+    if (!user) {
+      // Create new user if doesn't exist
+      user = new User({
+        email,
+        name: name || 'User',
+        googleId: uid,
+        profilePicture: photoURL,
+        isVerified: true, // Google users are pre-verified
+        password: undefined,
+      })
+      await user.save()
+    } else {
+      // Update existing user with Google ID if not already set
+      if (!user.googleId) {
+        user.googleId = uid
+      }
+      user.lastlogin = new Date()
+      await user.save()
+    }
+
+    generateToken(res, user._id)
+
+    return res.status(200).json({
+      success: true,
+      message: 'Google authentication successful',
+      user: { ...user._doc, password: undefined },
+    })
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message })
+  }
+}
+
+// update profile
+export const updateProfile = async (req, res) => {
+  try {
+    const { name, email, currentPassword, newPassword, profilePicture } = req.body
+    const userId = req.userId
+
+    if (!userId) {
+      return res.status(401).json({ success: false, message: 'Unauthorized' })
+    }
+
+    const user = await User.findById(userId)
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' })
+    }
+
+    // Update name if provided
+    if (name && name.trim()) {
+      user.name = name.trim()
+    }
+
+    // Update email if provided and not already taken
+    if (email && email.trim()) {
+      const existingUser = await User.findOne({ email: email.trim(), _id: { $ne: userId } })
+      if (existingUser) {
+        return res.status(400).json({ success: false, message: 'Email already in use' })
+      }
+      user.email = email.trim()
+    }
+
+    // Update password if provided (requires current password)
+    if (newPassword) {
+      if (!currentPassword) {
+        return res.status(400).json({ success: false, message: 'Current password is required' })
+      }
+      const isMatch = await bcrypt.compare(currentPassword, user.password)
+      if (!isMatch) {
+        return res.status(400).json({ success: false, message: 'Current password is incorrect' })
+      }
+      user.password = await bcrypt.hash(newPassword, 10)
+    }
+
+    // Update profile picture if provided
+    if (profilePicture) {
+      user.profilePicture = profilePicture
+    }
+
+    await user.save()
+
+    return res.status(200).json({
+      success: true,
+      message: 'Profile updated successfully',
+      user: { ...user._doc, password: undefined },
+    })
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message })
+  }
+}
+
+// delete account
+export const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.userId
+    const { password } = req.body
+
+    if (!userId) {
+      return res.status(401).json({ success: false, message: 'Unauthorized' })
+    }
+
+    if (!password) {
+      return res.status(400).json({ success: false, message: 'Password is required to delete account' })
+    }
+
+    const user = await User.findById(userId)
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' })
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password)
+    if (!isMatch) {
+      return res.status(400).json({ success: false, message: 'Password is incorrect' })
+    }
+
+    await User.findByIdAndDelete(userId)
+    res.clearCookie('token')
+
+    return res.status(200).json({ success: true, message: 'Account deleted successfully' })
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message })
+  }
+}

@@ -5,6 +5,7 @@ import { Mail, Lock  , Loader} from 'lucide-react'
  import { Link } from 'react-router-dom'
   import { useNavigate } from 'react-router-dom'
   import  { useAuthStore } from '../store/store'
+import Oauth from '../components/googleauth/Oauth'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -69,6 +70,7 @@ export default function LoginPage() {
                 'Log in'
               )}
             </button>
+             <Oauth/>
           </form>
 
           <div className="mt-6 text-center text-sm text-slate-400">

@@ -68,7 +68,7 @@ export const useAuthStore = create((set) => ({
   checkAuth: async () => {
     set({ isCheckingAuth: true, error: null });
     try {
-      const response = await axios.get(`${API_URL}/checkAuth`);
+      const response = await axios.get(`${API_URL}/verify-token`);
       set({ user: response?.data?.user, isAuthenticated: true, isCheckingAuth: false });
       return response.data;
     } catch (error) {
@@ -77,6 +77,38 @@ export const useAuthStore = create((set) => ({
         isAuthenticated: false,
         isCheckingAuth: false,
       });
+    }
+  },
+
+  updateProfile: async (profileData) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await axios.put(`${API_URL}/updateProfile`, profileData);
+      set({ user: response.data.user, isLoading: false });
+      return response.data;
+    } catch (error) {
+      set({
+        error: error?.response?.data?.message || 'Error updating profile',
+        isLoading: false,
+      });
+      throw error;
+    }
+  },
+
+  deleteAccount: async (password) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await axios.delete(`${API_URL}/deleteAccount`, {
+        data: { password },
+      });
+      set({ user: null, isAuthenticated: false, isLoading: false });
+      return response.data;
+    } catch (error) {
+      set({
+        error: error?.response?.data?.message || 'Error deleting account',
+        isLoading: false,
+      });
+      throw error;
     }
   },
 

@@ -1,8 +1,8 @@
 import { Property } from "../models/property.js" 
 import { errorHandler } from "../utils/error.js"
 export const createProperty = async (req,res,next) =>{ 
-     
-     
+      
+      
     try {
         const property = await Property.create(req.body) 
         return  res.status(201).json(property)
@@ -21,6 +21,18 @@ export const deleteProperty  = async (req, res, next) => {
     }
     await Property.findByIdAndDelete(req.params.id);
     return res.status(200).json({ success: true, message: 'Listing has been deleted' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+export const getMyListings = async (req, res, next) => {
+  try {
+    const userId = req.user.id; // assuming verifyToken attaches user object with id
+    const listings = await Property.find({ userRef: userId });
+    return res.status(200).json(listings);
   } catch (error) {
     next(error);
   }

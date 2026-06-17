@@ -1,9 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import React from "react";
 import { useEffect } from "react";
-import Dashboard from "./pages/dashboard"; 
+import Dashboard from "./pages/home"; 
 import  ForgotPassword from './pages/ForgotPassword'
 import  ResetPassword from './pages/resetPassword'
+import Profile from './pages/Profile';
 
 import Floating from "./components/floating";
 import LoginPage from "./pages/LoginPage";
@@ -30,7 +31,7 @@ import { Navigate } from "react-router-dom";
    //redirect authentiated user to  home page
  const RedirectAuthenticatedUser = ({children}) =>{
   const {isAuthenticated,user} = useAuthStore()
-   if(isAuthenticated && user.isVeriified){
+  if(isAuthenticated && user?.isVerified){
     return <Navigate to='/' replace /> 
    }
     return children
@@ -47,7 +48,7 @@ useEffect(()=>{
 },[checkAuth])
     
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 overflow-hidden relative">
+    <div className="min-h-screen bg-linear-to-br from-gray-900 via-green-900 to-emerald-900 overflow-hidden relative">
       <Floating
         color="bg-green-500"
         size="w-64 h-64"
@@ -92,6 +93,11 @@ useEffect(()=>{
         <Route path="/resetPassword" element={<ResetPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} /> 
+        <Route path="/profile" element={
+          <ProtectRoute>
+            <Profile />
+          </ProtectRoute>
+        } />
 
       </Routes>
     </div>

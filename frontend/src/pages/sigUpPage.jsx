@@ -5,6 +5,7 @@ import { User, Mail, Lock, Loader } from 'lucide-react'
 import   {Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
  import {  useAuthStore ,  } from '../store/store'
+import Oauth from '../components/googleauth/Oauth'
  
 export default function SignUpPage() {
   const handleSubmit = async (e) => {
@@ -110,6 +111,8 @@ export default function SignUpPage() {
             >
               {isLoading ?  <Loader className = 'animate-spin mx-auto' size ={24} /> : "sign up" }
             </button>
+              <Oauth/>
+
           </form>
 
           <div className="mt-6 text-center text-sm text-slate-400">
@@ -117,8 +120,10 @@ export default function SignUpPage() {
             <Link to={"/login"} className="font-semibold text-emerald-300 hover:text-emerald-200">
               Log in
             </Link>
-          </div>
-        </div>
+          </div> 
+         
+        </div> 
+        
       </motion.div> 
     </div>
   )

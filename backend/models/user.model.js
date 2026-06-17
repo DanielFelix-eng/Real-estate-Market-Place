@@ -6,9 +6,8 @@ import mongoose from "mongoose";
             unique : true
       }, 
        password :{ 
-        type
-    : String ,
-        required : true
+        type: String ,
+        required : false
        } , 
        name :{ 
         type : String ,
@@ -17,10 +16,13 @@ import mongoose from "mongoose";
        lastlogin : {
          type:Date ,
             default : Date.now
-       } , isVerified :{
+       } , 
+       isVerified :{
          type : Boolean ,
          default : false
-       } , 
+       }, 
+       googleId: String,
+       profilePicture: String,
        resetPasswordToken : String , 
        resetPasswordExpire : Date , 
        verificationToken : String ,

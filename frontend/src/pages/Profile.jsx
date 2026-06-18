@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/store'
-import { Camera, Lock, Trash2, Upload } from 'lucide-react'
+import axios from 'axios'
+import { Camera, Lock, Trash2, Upload, Plus, ChevronDown } from 'lucide-react'
 import { storage, ID } from '../appwrite'
 
 const defaultAvatar = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80'
@@ -19,6 +20,11 @@ export default function Profile() {
   const [deletePassword, setDeletePassword] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [showListings, setShowListings] = useState(false)
+  const [listings, setListings] = useState([])
+  const [isLoadingListings, setIsLoadingListings] = useState(false)
+  const [listingsError, setListingsError] = useState('')
+  const [listingsFetched, setListingsFetched] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -27,6 +33,27 @@ export default function Profile() {
       setAvatarPreview(user.profilePicture || '')
     }
   }, [user])
+
+  useEffect(() => {
+    if (showListings && !listingsFetched) {
+      fetchMyListings()
+    }
+  }, [showListings, listingsFetched])
+
+  const fetchMyListings = async () => {
+    setIsLoadingListings(true)
+    setListingsError('')
+    try {
+      axios.defaults.withCredentials = true
+      const response = await axios.get('/api/properties/propertycontroller/my-listings')
+      setListings(response.data || [])
+      setListingsFetched(true)
+    } catch (err) {
+      setListingsError(err?.response?.data?.message || 'Unable to load your listings.')
+    } finally {
+      setIsLoadingListings(false)
+    }
+  }
 
   const handleImageChange = (event) => {
     const file = event.target.files?.[0]
@@ -119,7 +146,7 @@ export default function Profile() {
               Manage your avatar, email, and password from one place.
             </p>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-6">
             <div className="relative h-24 w-24 overflow-hidden rounded-full border-4 border-emerald-500 bg-slate-800">
               <img
                 src={avatarPreview || defaultAvatar}
@@ -130,13 +157,60 @@ export default function Profile() {
                 <Camera className="h-5 w-5 text-white" />
               </div>
             </div>
-            <div className="text-right">
+            <div className="flex-1 text-right lg:text-left">
               <p className="text-sm text-slate-400">Signed in as</p>
               <p className="text-base font-medium text-slate-100">{user.email}</p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-[min-content_min-content]">
+              <button
+                type="button"
+                onClick={() => navigate('/create-property')}
+                className="inline-flex items-center justify-center gap-2 rounded-3xl border border-emerald-500/70 bg-emerald-500/10 px-4 py-3 text-sm font-medium text-emerald-200 transition hover:bg-emerald-500/20"
+              >
+                <Plus className="h-4 w-4" />
+                Add property
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowListings((prev) => !prev)}
+                className="inline-flex items-center justify-center gap-2 rounded-3xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-sm font-medium text-slate-100 transition hover:border-emerald-500 hover:bg-slate-900"
+              >
+                <span>Show listings</span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${showListings ? 'rotate-180' : ''}`} />
+              </button>
             </div>
           </div>
         </div>
 
+        {showListings ? (
+          <div className="mt-6 rounded-3xl border border-slate-800 bg-slate-950/90 p-5">
+            <h2 className="text-lg font-semibold text-slate-100">Your published listings</h2>
+            <p className="mt-2 text-sm text-slate-400">Click a listing to edit it.</p>
+            <div className="mt-4 space-y-3">
+              {isLoadingListings ? (
+                <div className="rounded-3xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-400">Loading listings...</div>
+              ) : listingsError ? (
+                <div className="rounded-3xl border border-rose-500/20 bg-rose-950/10 px-4 py-3 text-sm text-rose-300">{listingsError}</div>
+              ) : listings.length === 0 ? (
+                <div className="rounded-3xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-400">You have no published listings yet.</div>
+              ) : (
+                <div className="grid gap-3">
+                  {listings.map((listing) => (
+                    <button
+                      key={listing._id}
+                      type="button"
+                      onClick={() => navigate(`/update-property/${listing._id}`)}
+                      className="w-full text-left rounded-3xl border border-slate-700 bg-slate-950/80 px-4 py-4 transition hover:border-emerald-500 hover:bg-slate-900"
+                    >
+                      <div className="font-semibold text-slate-100">{listing.name}</div>
+                      <div className="mt-1 text-sm text-slate-400">{listing.address}</div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        ) : null}
         <form onSubmit={handleUpdate} className="mt-10 grid gap-8 lg:grid-cols-[1fr_1fr]">
           <div className="space-y-4">
             <label className="block text-sm font-medium text-slate-300">Avatar</label>

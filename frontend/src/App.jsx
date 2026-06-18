@@ -5,6 +5,8 @@ import Dashboard from "./pages/home";
 import  ForgotPassword from './pages/ForgotPassword'
 import  ResetPassword from './pages/resetPassword'
 import Profile from './pages/Profile';
+import CreateProperty from './pages/createProperty';
+import UpdateProperty from './pages/updateProperty';
 
 import Floating from "./components/floating";
 import LoginPage from "./pages/LoginPage";
@@ -98,7 +100,16 @@ useEffect(()=>{
             <Profile />
           </ProtectRoute>
         } />
-
+        <Route path="/create-property" element={
+          <ProtectRoute>
+            <CreateProperty />
+          </ProtectRoute>
+        } />
+        <Route path="/update-property/:id" element={
+          <ProtectRoute>
+            <UpdateProperty />
+          </ProtectRoute>
+        } />
       </Routes>
     </div>
   );

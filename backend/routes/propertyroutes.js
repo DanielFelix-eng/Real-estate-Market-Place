@@ -4,7 +4,7 @@ import { verifyToken } from "../middleware/verifyToken.js"
 
 const router = express.Router()
 
-router.post('/create', createProperty)
+router.post('/create-property', verifyToken, createProperty)
 router.get('/propertycontroller/my-listings', verifyToken, getMyListings) // to be added in controller
 router.get('/get/:id', getProperty)
 router.put('/update/:id', verifyToken, updateProperty)

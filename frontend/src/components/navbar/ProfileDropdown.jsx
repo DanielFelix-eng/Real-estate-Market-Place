@@ -4,27 +4,58 @@ import { Link } from 'react-router-dom';
 export default function ProfileDropdown({ isOpen, onClose }) {
   if (!isOpen) return null;
 
+  const handleClose = () => {
+    if (onClose) onClose();
+  };
+
   return (
-    <div className="fixed right-0 top-16 mt-2 w-56 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-50">
-      <div className="py-2">
-        <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+    <div className="fixed right-4 top-20 z-50 w-64 rounded-[28px] border border-slate-800 bg-slate-950/95 p-2 shadow-2xl shadow-black/30 backdrop-blur-sm">
+      <div className="space-y-1">
+        <Link
+          to="/profile"
+          onClick={handleClose}
+          className="block rounded-3xl px-4 py-3 text-sm font-medium text-slate-100 transition hover:bg-slate-900"
+        >
           Profile
         </Link>
-        <Link to="/my-listings" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+        <Link
+          to="/my-listings"
+          onClick={handleClose}
+          className="block rounded-3xl px-4 py-3 text-sm font-medium text-slate-100 transition hover:bg-slate-900"
+        >
           My Listings
         </Link>
-        <Link to="/bookings" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+        <Link
+          to="/bookings"
+          onClick={handleClose}
+          className="block rounded-3xl px-4 py-3 text-sm font-medium text-slate-100 transition hover:bg-slate-900"
+        >
           Bookings
         </Link>
-        <Link to="/wishlist" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+        <Link
+          to="/wishlist"
+          onClick={handleClose}
+          className="block rounded-3xl px-4 py-3 text-sm font-medium text-slate-100 transition hover:bg-slate-900"
+        >
           Wishlist
         </Link>
-        <Link to="/settings" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+        <Link
+          to="/settings"
+          onClick={handleClose}
+          className="block rounded-3xl px-4 py-3 text-sm font-medium text-slate-100 transition hover:bg-slate-900"
+        >
           Settings
         </Link>
-        <Link to="/logout" onClick={onClickLogout} className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+        <button
+          type="button"
+          onClick={() => {
+            handleClose();
+            onClickLogout();
+          }}
+          className="block w-full rounded-3xl px-4 py-3 text-left text-sm font-medium text-rose-300 transition hover:bg-slate-900"
+        >
           Logout
-        </Link>
+        </button>
       </div>
     </div>
   );

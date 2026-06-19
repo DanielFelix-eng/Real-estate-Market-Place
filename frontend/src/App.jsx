@@ -14,6 +14,7 @@ import SigUpPage from "./pages/sigUpPage";
 import EmailVerification from "./pages/EmailVerification";
 import { useAuthStore } from './store/store'
 import { Navigate } from "react-router-dom";
+import SearchPage from "./pages/searchPage";
  //protect routes that require authentication
   const ProtectRoute = ({ children }) => {
     const { isAuthenticated, user } = useAuthStore();
@@ -95,6 +96,7 @@ useEffect(()=>{
         <Route path="/resetPassword" element={<ResetPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} /> 
+        <Route path="/search" element={< SearchPage/>} /> 
         <Route path="/profile" element={
           <ProtectRoute>
             <Profile />
@@ -110,6 +112,7 @@ useEffect(()=>{
             <UpdateProperty />
           </ProtectRoute>
         } />
+         
       </Routes>
     </div>
   );

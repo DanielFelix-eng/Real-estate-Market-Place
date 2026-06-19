@@ -85,40 +85,41 @@ export const updateProperty = async (req, res, next) => {
   }
 };
    //  searchh Logic 
-    export const  searchListings  = async (res,req,next) =>{ 
-    try {
-        const  limit  =  parseInt(req.query.parse) || '9'  
-       const startIndex  =  parseInt(req.query.startIndex) || '0'
-         
-        let offer =  req.query.offer 
-        let furnished  =  req.query.furnished
-  
-        let parking =  req.query.parking
- 
-          if(offer === undefined || offer === 'false') {
-          offer = { $in : [false,true]}
-         }
-          if(furnished === undefined || furnished === 'false') {
-          furnished = { $in : [false,true]}
-         }
-          if(parking === undefined || parking === 'false') {
-          parking = { $in : [false,true]}
-         }
-          const searchTerm =  req.query.searchTerm || ''
-           const sort = req.query.sort || 'createdAt'
-           const order = req.query.order || 'desc'
-             const property =  await Property.find({
-               name: {$regex:  searchTerm  , $options: 'i'  } ,
-                offer, 
-                 furnished  ,
-                  parking
-    }) 
-     .sort({ [sort] :order})
-     .limit(limit)
-      .skip(startIndex)
-       return res.status(200).json(property)
-     
-      } catch (error) {
-      next(error)
+   export const searchListings = async (req, res, next) => {
+  try {
+    const limit = parseInt(req.query.limit ?? 9, 10) || 9;
+    const startIndex = parseInt(req.query.startIndex ?? 0, 10) || 0;
+
+    let offer = req.query.offer;
+    let furnished = req.query.furnished;
+    let parking = req.query.parking;
+
+    if (offer === undefined || offer === 'false') {
+      offer = { $in: [false, true] };
     }
+    if (furnished === undefined || furnished === 'false') {
+      furnished = { $in: [false, true] };
     }
+    if (parking === undefined || parking === 'false') {
+      parking = { $in: [false, true] };
+    }
+
+    const searchTerm = req.query.searchTerm || '';
+    const sort = req.query.sort || 'createdAt';
+    const order = req.query.order || 'desc';
+
+    const property = await Property.find({
+      name: { $regex: searchTerm, $options: 'i' },
+      offer,
+      furnished,
+      parking,
+    })
+      .sort({ [sort]: order })
+      .limit(limit)
+      .skip(startIndex);
+
+    return res.status(200).json(property);
+  } catch (error) {
+    next(error);
+  }
+};

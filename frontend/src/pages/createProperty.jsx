@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Home, MapPin, DollarSign, Loader2, Trash2, ChevronDown } from 'lucide-react';
-import { storage, ID } from '../appwrite';
+import { storage } from '../appwrite';
+import { ID } from 'appwrite';
+
 
 const inputClass =
   'w-full rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 placeholder:text-neutral-400 transition-colors duration-150 focus:border-[#FF385C] focus:outline-none focus:ring-2 focus:ring-[#FF385C]/20 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100';
@@ -315,6 +317,7 @@ export default function CreateProperty() {
             {isSubmitting ? 'Publishing...' : 'Publish property'}
           </button>
         </div>
+         
       </div>
     </div>
   );

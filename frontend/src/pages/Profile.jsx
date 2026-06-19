@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/store'
 import axios from 'axios'
 import { Camera, Lock, Trash2, Upload, Plus, ChevronDown } from 'lucide-react'
-import { storage, ID } from '../appwrite'
+import { storage } from '../appwrite'
+import { ID } from 'appwrite'
+
 
 const defaultAvatar = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80'
 

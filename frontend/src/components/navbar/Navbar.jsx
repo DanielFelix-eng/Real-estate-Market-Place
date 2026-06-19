@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import ProfileDropdown from './ProfileDropdown'
 import MobileMenu from './MobileMenu'
 import { useAuthStore } from '../../store/store'
+ 
 
 function scrollToSection(id) {
   const el = document.getElementById(id)
@@ -15,7 +16,7 @@ export default function Navbar() {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false)
   const location = useLocation()
   const { user } = useAuthStore()
-   const {currentUser} =useSelector((state) => state.user)
+  
 
    const  [searchTerm , setSearchTerm] =  useState('') 
 const navigate = useNavigate()
@@ -26,7 +27,7 @@ const navigate = useNavigate()
         urlParams.set('searchTerm' ,searchTerm) 
          
         const searchQuery =  urlParams.toString()
-         navigate(`/search${searchQuery}`)
+         navigate(`/search`)
              
      }
       useEffect(()=> {

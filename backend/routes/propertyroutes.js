@@ -1,5 +1,12 @@
 import express from 'express'
-import { updateProperty, createProperty, getProperty, deleteProperty  ,getMyListings} from "../controller/propertycontroller.js"
+import {
+  updateProperty,
+  createProperty,
+  getProperty,
+  deleteProperty,
+  getMyListings,
+  searchListings,
+} from "../controller/propertycontroller.js"
 import { verifyToken } from "../middleware/verifyToken.js"
 
 const router = express.Router()
@@ -9,6 +16,8 @@ router.get('/propertycontroller/my-listings', verifyToken, getMyListings) // to 
 router.get('/get/:id', getProperty)
 router.put('/update/:id', verifyToken, updateProperty)
 router.delete('/listings/:id', verifyToken, deleteProperty)
+router.get('/search', searchListings)
 
 export default router
+
 

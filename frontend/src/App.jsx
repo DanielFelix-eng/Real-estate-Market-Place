@@ -8,6 +8,8 @@ import Profile from './pages/Profile';
 import CreateProperty from './pages/createProperty';
 import UpdateProperty from './pages/updateProperty';
 
+
+
 import Floating from "./components/floating";
 import LoginPage from "./pages/LoginPage";
 import SigUpPage from "./pages/sigUpPage"; 
@@ -15,6 +17,7 @@ import EmailVerification from "./pages/EmailVerification";
 import { useAuthStore } from './store/store'
 import { Navigate } from "react-router-dom";
 import SearchPage from "./pages/searchPage";
+import Property from "./pages/property";
  //protect routes that require authentication
   const ProtectRoute = ({ children }) => {
     const { isAuthenticated, user } = useAuthStore();
@@ -97,6 +100,7 @@ useEffect(()=>{
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/forgotPassword" element={<ForgotPassword />} /> 
         <Route path="/search" element={< SearchPage/>} /> 
+        <Route path="/property/:id" element={< Property/>} /> 
         <Route path="/profile" element={
           <ProtectRoute>
             <Profile />

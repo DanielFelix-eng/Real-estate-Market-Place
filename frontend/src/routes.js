@@ -12,6 +12,7 @@ import Bookings from './pages/Bookings';
 import Wishlist from './pages/Wishlist';
 import Settings from './pages/Settings';
 import BecomeHost from './pages/BecomeHost';
+import Property from './pages/property';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import NotFound from './pages/NotFound';
@@ -33,6 +34,7 @@ function App() {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/host" element={<BecomeHost />} />
+          <Route path="/property/:id" element={<Property />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<NotFound />} />

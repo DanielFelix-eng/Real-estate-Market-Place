@@ -13,7 +13,7 @@ const router = express.Router()
 
 router.post('/create-property', verifyToken, createProperty)
 router.get('/propertycontroller/my-listings', verifyToken, getMyListings) // to be added in controller
-router.get('/get/:id', getProperty)
+router.get('/porperty/:id', getProperty)
 router.put('/update/:id', verifyToken, updateProperty)
 router.delete('/listings/:id', verifyToken, deleteProperty)
 router.get('/search', searchListings)

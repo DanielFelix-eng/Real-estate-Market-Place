@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../components/navbar/Navbar';
+ import { Link } from 'react-router-dom';
 
 function SearchPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -97,22 +98,22 @@ function SearchPage() {
               {results.map((p) => {
                 const cover = Array.isArray(p.imageUrls) ? p.imageUrls[0] : '';
                 return (
-                  <div
+                  <Link
                     key={p._id || p.id}
-                    className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/30"
+                    to={`/property/${p._id || p.id}`}
+                    className="group block overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/30 transition hover:border-slate-600 hover:bg-slate-900/50"
                   >
                     {cover ? (
                       <img
                         src={cover}
                         alt={p.name}
-                        className="h-40 w-full object-cover"
+                        className="h-40 w-full object-cover transition group-hover:scale-105"
                       />
                     ) : (
                       <div className="flex h-40 w-full items-center justify-center bg-slate-800/40 text-xs text-slate-300">
                         No image
                       </div>
                     )}
-
                     <div className="p-4">
                       <div className="text-sm font-semibold text-slate-100 line-clamp-2">{p.name}</div>
                       <div className="mt-1 text-xs text-slate-300 line-clamp-2">{p.address}</div>
@@ -139,7 +140,7 @@ function SearchPage() {
                         {p.type} · {p.furnished ? 'Furnished' : 'Not furnished'}
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
@@ -149,6 +150,5 @@ function SearchPage() {
     </>
   );
 }
-
 export default SearchPage;
 

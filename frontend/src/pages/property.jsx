@@ -12,7 +12,7 @@ export default function Property() {
     const fetchProperty = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/property/get/${id}`);
+        const res = await fetch(`/api/properties/get/${id}`);
         const data = await res.json();
         if (!res.ok) {
           throw new Error(data.message || "Failed to load property");
@@ -153,7 +153,7 @@ export default function Property() {
             <Info
               label="Price"
               value={`$${property.regularPrice?.toLocaleString()}${
-                property.type === "rent" ? " / night" : ""
+                property.type === "rent" ? " " : ""
               }`}
             />
             {property.offer && property.discountPrice > 0 && (

@@ -12,12 +12,11 @@ import { verifyToken } from "../middleware/verifyToken.js"
 const router = express.Router()
 
 router.post('/create-property', verifyToken, createProperty)
-router.get('/propertycontroller/my-listings', verifyToken, getMyListings) // to be added in controller
-router.get('/porperty/:id', getProperty)
+router.get('/my-listings', verifyToken, getMyListings)
+router.get('/get/:id', getProperty)
 router.put('/update/:id', verifyToken, updateProperty)
 router.delete('/listings/:id', verifyToken, deleteProperty)
 router.get('/search', searchListings)
-
 export default router
 
 

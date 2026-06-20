@@ -86,7 +86,7 @@ export default function CreateProperty() {
 
     try {
       axios.defaults.withCredentials = true;
-      const response = await axios.get('/api/properties/propertycontroller/my-listings');
+      const response = await axios.get('/api/properties/my-listings');
       setListings(response.data || []);
       setListingsFetched(true);
     } catch (error) {

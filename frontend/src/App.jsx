@@ -18,8 +18,9 @@ import { useAuthStore } from './store/store'
 import { Navigate } from "react-router-dom";
 import SearchPage from "./pages/searchPage";
 import Property from "./pages/property";
+import About from "./pages/About";
  //protect routes that require authentication
-  const ProtectRoute = ({ children }) => {
+const ProtectRoute = ({ children }) => {
     const { isAuthenticated, user } = useAuthStore();
 
     if (!isAuthenticated) {
@@ -101,6 +102,7 @@ useEffect(()=>{
         <Route path="/forgotPassword" element={<ForgotPassword />} /> 
         <Route path="/search" element={< SearchPage/>} /> 
         <Route path="/property/:id" element={< Property/>} /> 
+        <Route path="/About" element={< About/>} /> 
         <Route path="/profile" element={
           <ProtectRoute>
             <Profile />

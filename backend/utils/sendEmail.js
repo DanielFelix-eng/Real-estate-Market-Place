@@ -1,25 +1,19 @@
-// utils/sendEmail.js
-import { Resend } from "resend";
-import dotenv from "dotenv";
-dotenv.config();
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { BrevoClient } from '@getbrevo/brevo';
 
-export const sendEmail = async ({
-  to,
-  subject,
-  html,
-}) => {
-  try {
-    const data = await resend.emails.send({
-      from: "onboarding@resend.dev",
-      to,
-      subject,
-      html,
-    });
+const getClient = () => {
+  return new BrevoClient({ apiKey: process.env.BREVO_API_KEY });
+};
 
-    return data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+export const sendEmail = async ({ to, subject, html }) => {
+  const client = getClient();
+
+  await client.transactionalEmails.sendTransacEmail({
+    subject,
+    htmlContent: html,
+    sender: {
+      name: process.env.EMAIL_FROM_NAME || 'My App',
+      email: process.env.EMAIL_FROM_ADDRESS,
+    },
+    to: [{ email: to }],
+  });
 };

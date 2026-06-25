@@ -84,14 +84,16 @@ const navigate = useNavigate()
               Profile
             </button>
           </Link>
-            
-            <button
+            <Link to ={'/About'}>
+             <button
               type="button"
               onClick={() => handleNavToSection('about')}
               className="rounded-full px-4 py-2 text-sm font-medium text-slate-200 transition hover:bg-slate-800 hover:text-white"
             >
               About
             </button>
+            </Link>
+            
           </div>
 
           <div className="flex items-center gap-3">

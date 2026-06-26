@@ -7,8 +7,8 @@ export const sendWelcomeEmail = async (name, email, dashboardUrl) => {
 
     await sendEmail({
       to: email,
-      subject: "Welcome to our service",
-      html,
+      subject: "Welcome to jardini homes",
+           html,
     });
   } catch (error) {
     console.error("Error sending welcome email:", error);
@@ -43,4 +43,4 @@ export const resetPasswordEmail = async(email) =>{
     console.error("Error sending reset password email:", error);
     throw error;
   }
-}
+} 

@@ -9,8 +9,10 @@ import cors from 'cors'
 dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 3000
-app.use(cors({origin: 'http://localhost:5173', 
-   https://jardini-homes.onrender.com ,
+app.use(cors({ 
+  origin: [
+    'http://localhost:5173',
+   'https://jardini-homes-9q1l.onrender.com'], 
    credentials: true}))
 app.use(express.json())
 app.use(cookieParser())

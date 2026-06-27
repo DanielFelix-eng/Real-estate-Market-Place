@@ -3,7 +3,7 @@
 A full-stack real estate marketplace where users can browse, list, and manage rental and sale properties — built with the MERN stack and deployed on Render.
 
 **🔗 Live Demo:** [jardini-homes.onrender.com](https://jardini-homes.onrender.com)  
-**📁 GitHub:** [github.com/your-username/jardini-homes](https://github.com/your-username/jardini-homes) <!-- replace with actual repo URL -->
+**📁 GitHub:** [github.com/your-username/jardini-homes](/https://github.com/DanielFel/jardini-homes) <!-- replace with actual repo URL -->
 
 ---
 

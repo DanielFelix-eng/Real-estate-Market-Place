@@ -29,12 +29,18 @@ app.use(cookieParser())
 app.use('/api/auth', authRoute)
 app.use('/api/properties', PropertyRoutes)
 
-// Serve the static frontend assets from your React production build
-app.use(express.static(path.join(__dirname, '/frontend/dist')))
+// 1. Serve the static frontend assets safely using robust path arguments
+app.use(express.static(path.join(__dirname, 'frontend', 'dist')))
 
-// FIXED: Catch-all route to correctly serve the single-page application index
-app.get('/*splat', (req, res) => {
-  res.sendFile(path.join(__dirname, '/frontend/dist/index.html'))
+// 2. Explicit root route handler to directly bypass complex matching for the home page
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'))
+})
+
+// 3. FIXED FOR EXPRESS V5: Native regular expression fallback that captures all frontend
+// routing paths safely while deliberately ignoring any backend endpoints starting with /api
+app.get(/^(?!\/api).*$/, (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'))
 })
 
 // Centralized Global Error Handling Middleware
